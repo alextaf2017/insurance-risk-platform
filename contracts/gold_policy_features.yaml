@@ -1,0 +1,26 @@
+# Data contract (embrione di data product in ottica data mesh)
+product: policy_features
+table: lake.gold.policy_features
+owner: alessio.tafuni
+domain: motor-insurance
+description: Una riga per polizza RC Auto con feature, target e split train/test deterministico.
+grain: id_pol
+update_frequency: on-demand
+sla:
+  freshness: "< 24h"
+quality_rules:
+  - id_pol univoco e non nullo
+  - exposure in (0, 1]
+  - claim_freq >= 0
+  - split in {train, test}
+columns:
+  id_pol: {type: bigint, description: Identificativo polizza}
+  exposure: {type: double, description: Anni-polizza (cap a 1)}
+  claim_nb: {type: int, description: Numero sinistri (cap a 4)}
+  claim_freq: {type: double, description: claim_nb / exposure}
+  total_claim_amount: {type: double, description: Somma importi sinistri}
+  avg_severity: {type: double, description: Costo medio per sinistro (null se nessun sinistro)}
+  split: {type: string, description: "train/test da hash(id_pol), 80/20"}
+known_issues:
+  - is_claim_inconsistent segnala polizze con ClaimNb>0 ma senza record di severita (o viceversa)
+pii: none

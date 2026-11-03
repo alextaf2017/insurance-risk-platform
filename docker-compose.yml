@@ -1,0 +1,61 @@
+# Data lake locale: storage S3-compatibile (S3Mock) + Postgres (catalogo Iceberg) + Spark
+services:
+  s3:
+    image: adobe/s3mock:latest
+    container_name: s3
+    user: root
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: warehouse
+      COM_ADOBE_TESTING_S3MOCK_STORE_ROOT: /data
+      COM_ADOBE_TESTING_S3MOCK_STORE_RETAIN_FILES_ON_EXIT: "true"
+    ports:
+      - "9090:9090"   # API S3 (http)
+    volumes:
+      - s3_data:/data
+
+  postgres:
+    image: postgres:16
+    container_name: iceberg-catalog-db
+    environment:
+      POSTGRES_USER: ${CATALOG_DB_USER:-iceberg}
+      POSTGRES_PASSWORD: ${CATALOG_DB_PASSWORD:-iceberg}
+      POSTGRES_DB: ${CATALOG_DB_NAME:-iceberg_catalog}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CATALOG_DB_USER:-iceberg} -d ${CATALOG_DB_NAME:-iceberg_catalog}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  spark:
+    build: ./spark
+    container_name: spark
+    depends_on:
+      postgres:
+        condition: service_healthy
+      s3:
+        condition: service_started
+    environment:
+      # S3Mock non verifica le credenziali, ma l'SDK AWS ne richiede di qualsiasi valore
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+      AWS_REGION: us-east-1
+      S3_ENDPOINT: http://s3:9090
+      WAREHOUSE: s3://warehouse/
+      CATALOG_DB_HOST: postgres
+      CATALOG_DB_NAME: ${CATALOG_DB_NAME:-iceberg_catalog}
+      CATALOG_DB_USER: ${CATALOG_DB_USER:-iceberg}
+      CATALOG_DB_PASSWORD: ${CATALOG_DB_PASSWORD:-iceberg}
+      PYTHONPATH: /workspace/src
+      RAW_DIR: /workspace/data/raw
+    volumes:
+      - ./src:/workspace/src
+      - ./data:/workspace/data
+    ports:
+      - "4040:4040"   # Spark UI (quando un job è in esecuzione)
+    command: tail -f /dev/null
+
+volumes:
+  s3_data:
+  pg_data:

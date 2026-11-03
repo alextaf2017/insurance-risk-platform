@@ -1,0 +1,5 @@
+line-length = 120
+
+[lint]
+# Regole di base: errori di sintassi/logica (E4, E7, E9) e Pyflakes (F)
+select = ["E4", "E7", "E9", "F"]
