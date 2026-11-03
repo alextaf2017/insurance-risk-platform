@@ -52,7 +52,7 @@ run("3. Regioni per frequenza, con esposizione cumulata (RANK + window cumulativ
            RANK() OVER (ORDER BY claims / exposure DESC) AS freq_rank,
            round(100 * sum(exposure) OVER (ORDER BY exposure DESC) / sum(exposure) OVER (), 1) AS cum_exposure_pct
     FROM reg
-    ORDER BY freq_rank
+    ORDER BY exposure DESC
 """)
 
 run("4. Frequenza per fascia di Bonus-Malus", f"""
