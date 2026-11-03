@@ -24,3 +24,5 @@ clean:
 	docker compose down -v
 explore:
 	$(SUBMIT) src/explore_lake.py
+eda:
+	$(SUBMIT) src/analysis/01_eda_sql.py
