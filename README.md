@@ -80,6 +80,16 @@ non ancora liquidati, errori di abbinamento) vanno verificate e la scelta di tra
 dal modello di severità, imputare, analisi di sensibilità) è oggetto della milestone 3.
 Il flag `is_claim_inconsistent` rende la scelta tracciabile.
 
+## Risultati della milestone 2B (solo split train)
+
+- **Frequenza**: sovradispersione (phi = 2,55) rispetto al Poisson. Il modello lineare spiega il 3,4% della
+  devianza; i fattori dominanti sono Bonus-Malus (1,76%), età del veicolo (0,54%) e fascia d'età (0,23%).
+- **Collinearità**: `area` e `log_density` sono quasi la stessa informazione (Spearman 0,976, VIF 17): se ne usa una.
+- **Severità**: coda molto pesante (Hill alpha ≈ 1,03-1,18; l'1% dei sinistri vale il 39,8% dell'importo).
+  L'effetto dell'età sulla severità dipende da pochi sinistri enormi e sparisce con il cap al 99,5° percentile.
+- **Decisione**: nella milestone 3 la severità si modella separando sinistri normali e coda; le feature
+  si scelgono con cross-validation e non con i soli p-value. Dettagli in `reports/stats_summary.md`.
+
 ## Decisioni di progetto
 
 - **Iceberg con catalogo JDBC (Postgres)** invece di un Hadoop catalog: più vicino a un setup reale e
