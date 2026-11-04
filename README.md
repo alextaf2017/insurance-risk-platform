@@ -1,8 +1,10 @@
+[English version](README.en.md)
+
 # Insurance Claims Risk Platform
 
-Piattaforma end-to-end di risk modeling per l'assicurazione RC Auto: data lake su **Apache Iceberg + Spark**,
-modelli attuariali e di Machine Learning, componente NLP con modelli Hugging Face, analisi dei rischi AI,
-deploy e business case. Il progetto è sviluppato per milestone verticali.
+Progetto di data engineering e risk analytics per l'assicurazione RC Auto, sviluppato per milestone. **La milestone 1 è completata**: data lake Bronze/Silver/Gold con Apache Spark e Apache Iceberg, controlli di qualità, data contract e split train/test deterministico.
+
+I modelli attuariali, il machine learning, la componente NLP, il deployment e il business case sono **attività pianificate**, non funzionalità già completate.
 
 | Milestone | Contenuto | Stato |
 |---|---|---|
