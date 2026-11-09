@@ -1,0 +1,62 @@
+{
+  "created_utc": "2026-11-09T08:21:42+00:00",
+  "sklearn_version": "1.3.2",
+  "features": {
+    "numeric": [
+      "driv_age_c",
+      "veh_age_c",
+      "bonus_malus_c",
+      "veh_power",
+      "log_density"
+    ],
+    "categorical": [
+      "veh_gas",
+      "veh_brand",
+      "region"
+    ]
+  },
+  "target": "sev_claim_count / exposure (tasso per anno-polizza), peso = exposure",
+  "glm_params": {
+    "n_knots": 7,
+    "alpha": 1.0384488120494425e-06
+  },
+  "hgb_params": {
+    "learning_rate": 0.0938393881004349,
+    "max_leaf_nodes": 37,
+    "min_samples_leaf": 53,
+    "l2_regularization": 7.579479953348009
+  },
+  "baseline_rate_train": 0.07354990169205342,
+  "test_metrics": {
+    "Null": {
+      "dev_test": 0.48438,
+      "D2_test_%": 0.0,
+      "gini_test": 0.0
+    },
+    "GLM (default)": {
+      "dev_test": 0.46337,
+      "D2_test_%": 4.33826,
+      "gini_test": 0.27943
+    },
+    "GLM (tuned)": {
+      "dev_test": 0.46155,
+      "D2_test_%": 4.7132,
+      "gini_test": 0.28975
+    },
+    "GLM (area al posto di log_density)": {
+      "dev_test": 0.46162,
+      "D2_test_%": 4.69888,
+      "gini_test": 0.28964
+    },
+    "HGB (default)": {
+      "dev_test": 0.47611,
+      "D2_test_%": 1.708,
+      "gini_test": 0.31066
+    },
+    "HGB (tuned)": {
+      "dev_test": 0.45347,
+      "D2_test_%": 6.38201,
+      "gini_test": 0.31751
+    }
+  }
+}

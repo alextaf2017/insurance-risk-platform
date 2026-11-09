@@ -49,10 +49,12 @@ services:
       CATALOG_DB_PASSWORD: ${CATALOG_DB_PASSWORD:-iceberg}
       PYTHONPATH: /workspace/src
       RAW_DIR: /workspace/data/raw
+      MODELS_DIR: /workspace/models
       REPORTS_DIR: /workspace/reports
     volumes:
       - ./src:/workspace/src
       - ./data:/workspace/data
+      - ./models:/workspace/models
       - ./reports:/workspace/reports
     ports:
       - "4040:4040"   # Spark UI (quando un job è in esecuzione)

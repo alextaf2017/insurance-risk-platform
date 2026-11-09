@@ -9,8 +9,8 @@ I modelli attuariali, il machine learning, la componente NLP, il deployment e il
 | Milestone | Contenuto | Stato |
 |---|---|---|
 | 1 | Data lake (bronze/silver/gold), Iceberg, data quality, data contract | ✅ completata |
-| 2 | EDA, inferenza statistica, SQL ottimizzato | ⏳ prossima |
-| 3 | Modelli tabellari (GLM, Random Forest, gradient boosting) | ⬜ |
+| 2 | EDA con Spark SQL, inferenza statistica (GLM, VIF, bootstrap) | ✅ completata |
+| 3 | Modelli tabellari: frequenza (GLM/HGB), severità, premio puro, Tweedie | ✅ completata |
 | 4 | NLP: fine-tuning di un transformer su testi di sinistri | ⬜ |
 | 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ⬜ |
 | 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ⬜ |
@@ -81,6 +81,26 @@ nella tabella di severità. Per queste polizze `avg_severity` è nullo. Le cause
 non ancora liquidati, errori di abbinamento) vanno verificate e la scelta di trattamento (escluderle
 dal modello di severità, imputare, analisi di sensibilità) è oggetto della milestone 3.
 Il flag `is_claim_inconsistent` rende la scelta tracciabile.
+
+## Risultati della milestone 3 (valutazione sul test)
+
+- **Frequenza**: il gradient boosting ottimizzato (Optuna) batte il GLM con spline: devianza di Poisson 0,574 contro
+  0,595 (D² 8,4% contro 5,1%, Gini 0,333 contro 0,287). La differenza è +0,021 per anno-polizza, IC bootstrap 95% (+0,018, +0,023).
+  Con parametri di default il boosting sovradatta (degrado train-test 4,6%); il tuning lo riduce.
+- **Dato anomalo**: nel portafoglio i sinistri contati (`claim_nb`) superano quelli con importo registrato
+  (train: 28.826 contro 21.113, rapporto 0,73, stabile nel test). Moltiplicare frequenza e severità sovrastima
+  il costo (rapporto perdita reale su prevista 0,64). Non è casuale: la quota di sinistri con importo è 0,23 per
+  i veicoli di età 0 e 0,47 per la marca B12, contro circa 0,8 per il resto.
+- **Soluzione adottata**: frequenza dei sinistri pagati (`sev_claim_count`) × severità. Sulle perdite con cap
+  il rapporto reale/previsto diventa 1,03 (IC 0,96-1,08); il Tweedie diretto dà 1,01. Gini: 0,330 contro 0,327 (differenza non significativa).
+- **Severità**: nessun modello batte la costante di almeno l'1% in cross-validation (migliore: +0,46%), e il
+  guadagno cambia segno con la soglia del cap. Si usa la severità media con cap più un fattore di coda.
+- **Incertezza principale**: il fattore di coda stimato sul train (1,385) è più alto di quello implicito nel test
+  (circa 1,18); a seconda del cap oscilla tra 1,21 e 1,49. Sulle perdite senza cap il rapporto è 0,87.
+
+**Da confermare con chi possiede i dati**: cosa significa un sinistro senza importo. Se costa zero (chiuso senza
+pagamento), la frequenza dei sinistri pagati è corretta; se è un costo non ancora registrato, il premio dei
+segmenti con molti sinistri senza importo (veicoli nuovi, marca B12) è sottostimato.
 
 ## Decisioni di progetto
 

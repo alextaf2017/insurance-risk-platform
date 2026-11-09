@@ -5,3 +5,6 @@ __pycache__/
 .env
 .venv/
 data/analysis/
+data/modeling/
+models/*.joblib
+.ruff_cache/
