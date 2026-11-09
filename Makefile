@@ -1,6 +1,6 @@
 SUBMIT = docker compose exec spark /opt/spark/bin/spark-submit --driver-memory 3g
 
-.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats pipeline shell clean
+.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean
 up:
 	docker compose up -d --build
 down:
@@ -30,3 +30,14 @@ stats-export:
 	$(SUBMIT) src/analysis/00_export_train.py
 stats:
 	docker compose exec spark python3 src/analysis/02_stats_inference.py
+model-export:
+	$(SUBMIT) src/modeling/export_data.py
+model-freq:
+	docker compose exec spark python3 src/modeling/01_frequency.py
+model-sev:
+	docker compose exec spark python3 src/modeling/02_severity_pricing.py
+models: model-export model-freq model-sev
+model-freq-pay:
+	docker compose exec -e FREQ_TARGET=sev_claim_count spark python3 src/modeling/01_frequency.py
+model-sev-pay:
+	docker compose exec -e FREQ_TARGET=sev_claim_count spark python3 src/modeling/02_severity_pricing.py
