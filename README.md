@@ -11,7 +11,7 @@ I modelli attuariali, il machine learning, la componente NLP, il deployment e il
 | 1 | Data lake (bronze/silver/gold), Iceberg, data quality, data contract | ✅ completata |
 | 2 | EDA con Spark SQL, inferenza statistica (GLM, VIF, bootstrap) | ✅ completata |
 | 3 | Modelli tabellari: frequenza (GLM/HGB), severità, premio puro, Tweedie | ✅ completata |
-| 4 | NLP: fine-tuning di un transformer su testi di sinistri | ⬜ |
+| 4 | NLP: triage di narrative NHTSA (TF-IDF contro DistilBERT con fine-tuning) | ⏳ in corso |
 | 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ⬜ |
 | 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ⬜ |
 | 7 | Business case e ROI | ⬜ |

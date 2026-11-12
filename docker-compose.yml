@@ -60,6 +60,21 @@ services:
       - "4040:4040"   # Spark UI (quando un job è in esecuzione)
     command: tail -f /dev/null
 
+  nlp:
+    build: ./nlp
+    container_name: nlp
+    environment:
+      HF_HOME: /workspace/data/hf_cache
+      TOKENIZERS_PARALLELISM: "false"
+      PYTHONPATH: /workspace/src
+    volumes:
+      - ./src:/workspace/src
+      - ./data:/workspace/data
+      - ./reports:/workspace/reports
+      - ./models:/workspace/models
+    working_dir: /workspace
+    command: tail -f /dev/null
+
 volumes:
   s3_data:
   pg_data:

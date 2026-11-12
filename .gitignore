@@ -8,3 +8,5 @@ data/analysis/
 data/modeling/
 models/*.joblib
 .ruff_cache/
+data/nlp/
+data/hf_cache/

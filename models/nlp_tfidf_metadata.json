@@ -1,0 +1,33 @@
+{
+  "created_utc": "2026-11-12T08:17:02+00:00",
+  "task": "esito grave (feriti, decessi o cure mediche) da narrativa del reclamo NHTSA",
+  "split": "train <= 2023, validation 2024, test >= 2025",
+  "vectorizer": {
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 5,
+    "max_features": 300000,
+    "sublinear_tf": true
+  },
+  "classifier": {
+    "type": "LogisticRegression",
+    "solver": "liblinear",
+    "C": 3.0
+  },
+  "test": {
+    "Regola a parole chiave": {
+      "pr_auc_test": 0.2298,
+      "ic_low": 0.2174,
+      "ic_high": 0.2432,
+      "roc_auc_test": 0.7687
+    },
+    "TF-IDF + regressione logistica": {
+      "pr_auc_test": 0.7343,
+      "ic_low": 0.7208,
+      "ic_high": 0.7482,
+      "roc_auc_test": 0.9715
+    }
+  }
+}
