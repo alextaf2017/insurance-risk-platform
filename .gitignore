@@ -10,3 +10,8 @@ models/*.joblib
 .ruff_cache/
 data/nlp/
 data/hf_cache/
+models/nlp_stage2/
+models/nlp_stage2_dryrun/
+models/nlp_stage2_dryrun_metadata.json
+models/nlp_stage2_dryrun_metadata.json
+models/nlp_stage2_dryrun_metadata.json

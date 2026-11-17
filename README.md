@@ -11,7 +11,7 @@ I modelli attuariali, il machine learning, la componente NLP, il deployment e il
 | 1 | Data lake (bronze/silver/gold), Iceberg, data quality, data contract | ✅ completata |
 | 2 | EDA con Spark SQL, inferenza statistica (GLM, VIF, bootstrap) | ✅ completata |
 | 3 | Modelli tabellari: frequenza (GLM/HGB), severità, premio puro, Tweedie | ✅ completata |
-| 4 | NLP: triage di narrative NHTSA (TF-IDF contro DistilBERT con fine-tuning) | ⏳ in corso |
+| 4 | NLP: triage di narrative NHTSA (TF-IDF, cascata con transformer, controlli) | ✅ completata |
 | 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ⬜ |
 | 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ⬜ |
 | 7 | Business case e ROI | ⬜ |
@@ -101,6 +101,26 @@ Il flag `is_claim_inconsistent` rende la scelta tracciabile.
 **Da confermare con chi possiede i dati**: cosa significa un sinistro senza importo. Se costa zero (chiuso senza
 pagamento), la frequenza dei sinistri pagati è corretta; se è un costo non ancora registrato, il premio dei
 segmenti con molti sinistri senza importo (veicoli nuovi, marca B12) è sottostimato.
+
+## Risultati della milestone 4 (triage di narrative NHTSA)
+
+Compito: ordinare i reclami NHTSA per probabilita' di esito grave (feriti, decessi o cure mediche), dato solo il testo.
+Dati pubblici, split temporale (train fino al 2023, validation 2024, test 2025-2026). Scheda completa: `docs/model_card_nlp_triage.md`.
+
+- **Baseline lessicale**: TF-IDF con regressione logistica, PR-AUC 0,734 (IC 0,721-0,748) contro 0,230 di una regola a parole
+  chiave. Rivedendo il 5% dei reclami si cattura l'83,6% dei casi gravi. La pulizia di firme ed etichette di origine non cambia il
+  risultato: il baseline non si appoggiava ad artefatti.
+- **Vincolo di calcolo**: su CPU a 4 thread un fine-tuning completo costa ore. Si e' scelta una **cascata**: il TF-IDF seleziona il
+  20% di candidati (96,5% dei casi gravi), un transformer piccolo (MiniLM, 9.000 esempi, 60 minuti) li riordina.
+- **Risultato**: la combinazione migliora la PR-AUC tra i candidati di +0,041 (+0,035, +0,048) e il recall al 5% di revisione
+  da 83,5% a 86,8% (+3,3 punti; +2,4, +4,1). Il guadagno e' moderato.
+- **Controllo**: un secondo stadio lessicale addestrato sugli stessi candidati non aiuta (+0,005); il transformer lo batte di
+  +0,024 di PR-AUC. Il vantaggio e' del modello contestuale, non della specializzazione.
+- **Robustezza**: il modello e' molto piu' affidabile sulle narrative scritte da un operatore (PR-AUC 0,94-0,96) che sulle altre
+  (0,64-0,68, il 79% del test); il guadagno del transformer e' maggiore proprio nel gruppo piu' debole. Il guadagno e' stabile tra 2025 e 2026.
+- **Drift**: dal 2018 le narrative si allungano del 34% e lo stile da operatore cambia; il tasso di esito grave oscilla tra 2,1% e 3,4%.
+  Va monitorato (milestone 5).
+- **Limiti**: reclami su difetti, non sinistri assicurativi; etichette dichiarate e rumorose; una sola esecuzione di addestramento.
 
 ## Decisioni di progetto
 

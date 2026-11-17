@@ -1,0 +1,31 @@
+{
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "max_len": 256,
+  "epochs": 2,
+  "lr": 5e-05,
+  "batch": 16,
+  "n_train": 9000,
+  "n_train_pos": 3000,
+  "val_neg_frac": 0.1,
+  "test_neg_frac": 0.25,
+  "best_epoch": 2,
+  "history": [
+    {
+      "epoch": 1,
+      "loss_media": 0.3717029447771516,
+      "val_pr_auc_pesata": 0.8161312668760221,
+      "secondi_inferenza_validation": 95.14983701705933
+    },
+    {
+      "epoch": 2,
+      "loss_media": 0.2367057804990937,
+      "val_pr_auc_pesata": 0.8275133019494149,
+      "secondi_inferenza_validation": 121.64751315116882
+    }
+  ],
+  "train_minutes": 59.6,
+  "inference_docs_per_second": 17.01,
+  "torch": "2.15.0+cpu",
+  "threads": 4,
+  "dry_run": false
+}
