@@ -1,6 +1,6 @@
 SUBMIT = docker compose exec spark /opt/spark/bin/spark-submit --driver-memory 3g
 
-.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean
+.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control
 up:
 	docker compose up -d --build
 down:
@@ -41,3 +41,27 @@ model-freq-pay:
 	docker compose exec -e FREQ_TARGET=sev_claim_count spark python3 src/modeling/01_frequency.py
 model-sev-pay:
 	docker compose exec -e FREQ_TARGET=sev_claim_count spark python3 src/modeling/02_severity_pricing.py
+nlp-up:
+	docker compose up -d --build nlp
+nlp-download:
+	docker compose exec spark python3 src/nlp/01_download_nhtsa.py
+nlp-lake:
+	$(SUBMIT) src/nlp/02_lake_nhtsa.py
+nlp-smoke:
+	docker compose exec nlp python3 src/nlp/00_nlp_smoke.py
+nlp-baseline:
+	docker compose exec spark python3 src/nlp/03_baseline_tfidf.py
+nlp-experiments:
+	docker compose exec spark python3 src/nlp/04_tfidf_experiments.py
+nlp-stage1:
+	docker compose exec spark python3 src/nlp/05_stage1_scores.py
+nlp-finetune-dry:
+	docker compose exec -e DRY_RUN=1 nlp python3 src/nlp/06_finetune_stage2.py
+nlp-finetune:
+	docker compose exec -d nlp sh -c "python3 src/nlp/06_finetune_stage2.py > data/nlp/finetune.log 2>&1"
+nlp-finetune-log:
+	tail -n 25 -f data/nlp/finetune.log
+nlp-compare:
+	docker compose exec spark python3 src/nlp/07_compare_cascade.py
+nlp-control:
+	docker compose exec spark python3 src/nlp/08_control_lexical_stage2.py
