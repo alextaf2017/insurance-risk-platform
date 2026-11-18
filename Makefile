@@ -1,6 +1,6 @@
 SUBMIT = docker compose exec spark /opt/spark/bin/spark-submit --driver-memory 3g
 
-.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control
+.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control risk-audit risk-nlp-drift
 up:
 	docker compose up -d --build
 down:
@@ -65,3 +65,7 @@ nlp-compare:
 	docker compose exec spark python3 src/nlp/07_compare_cascade.py
 nlp-control:
 	docker compose exec spark python3 src/nlp/08_control_lexical_stage2.py
+risk-audit:
+	docker compose exec spark python3 src/risk/01_insurance_audit.py
+risk-nlp-drift:
+	docker compose exec spark python3 src/risk/02_nlp_drift.py

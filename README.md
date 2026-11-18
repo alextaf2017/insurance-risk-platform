@@ -12,7 +12,7 @@ I modelli attuariali, il machine learning, la componente NLP, il deployment e il
 | 2 | EDA con Spark SQL, inferenza statistica (GLM, VIF, bootstrap) | ✅ completata |
 | 3 | Modelli tabellari: frequenza (GLM/HGB), severità, premio puro, Tweedie | ✅ completata |
 | 4 | NLP: triage di narrative NHTSA (TF-IDF, cascata con transformer, controlli) | ✅ completata |
-| 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ⬜ |
+| 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ✅ completata |
 | 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ⬜ |
 | 7 | Business case e ROI | ⬜ |
 
@@ -142,6 +142,15 @@ Dati pubblici, split temporale (train fino al 2023, validation 2024, test 2025-2
 | `pull access denied` per `minio/mc` e `minio/minio` | Immagini MinIO non più disponibili su Docker Hub e non accessibili su quay.io (401) | Sostituito con Adobe S3Mock (`adobe/s3mock`) |
 | S3Mock risponde `500 InternalError` a ogni scrittura | Il container gira come utente non-root e il volume montato su `/data` è di root (causa probabile: risolto con `user: root`) | `user: root` per il servizio `s3` |
 | `cd C:\...` non funziona | WSL richiede percorsi Linux (`/mnt/c/...`) | Progetto spostato in `~/` |
+
+## Risultati della milestone 5 (rischio e IA responsabile)
+
+- **Calibrazione per gruppo**: su 35 gruppi il boosting ne ha 1 con intervallo che esclude la calibrazione (35-49 anni, +4,7% sottostima), il GLM 3 (sottostime 4-14%). Non dimostra equità.
+- **Guasto di una variabile**: Bonus-Malus errato costa +7,1% di devianza e dimezza il Gini (0,318 → 0,155); età del conducente +1,3%.
+- **Overfitting**: scarto train-test 3,6%; il GLM è migliore sotto circa 27.000 polizze di addestramento, il boosting sopra.
+- **Monitoraggio**: il PSI del punteggio è poco sensibile (+6% di premio medio → 0,011); si usano PSI di variabile e variazione della frequenza media prevista.
+- **Drift NLP 2018-2026**: i testi si allungano (91 → 122 parole), la recall al 5% resta 0,82-0,86; soglie di allarme riviste.
+- Documenti: `docs/model_card_insurance_frequency.md`, `docs/model_card_nlp_triage.md`, `docs/risk_register.md`; report in `reports/m5_*`.
 
 ## Limiti noti
 
