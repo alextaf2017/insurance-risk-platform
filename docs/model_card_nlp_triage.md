@@ -75,12 +75,6 @@ circa 14 secondi per 1.000 reclami.
 - **Drift osservato**: dal 2018 al 2026 la lunghezza media passa da 91 a 122 parole (+34%), il prefisso `TL*` sparisce
   nel 2022 mentre lo stile da operatore ("the contact") resta e oscilla (17,6% → 26,3% → 18,2%); il tasso di esito grave
   varia tra il 2,1% e il 3,4%. Testi più lunghi saranno troncati più spesso a 256 token.
-- **Eterogeneità tra gruppi**: sul test la PR-AUC tra i candidati va da 0,94-0,96 per le narrative scritte da un operatore
-  ("the contact", 21% dei reclami, tasso grave 3,7%) a 0,64-0,68 per tutte le altre (79%, tasso grave 2,3%); il recall rivedendo il
-  5% va da 95-97% a 79-82%. Il guadagno del transformer è maggiore dove il lessico è più debole (+0,044 di PR-AUC e +3,8 punti di
-  recall contro +0,020 e +2,3). Per anno: nel 2026 tutti i ranker peggiorano (recall al 5% della combinazione da 88,3% a 84,5%),
-  ma il tasso di esito grave sale (2,2% → 2,9%) e a revisione fissa il recall dipende anche dalla prevalenza: con questi dati la
-  causa non è separabile. Il guadagno della combinazione è invece uguale nei due anni (+2,5 e +2,6 punti).
 - **Statistica**: una sola esecuzione di addestramento, un solo modello e un solo insieme di iperparametri; il bootstrap
   tratta i reclami come indipendenti (reclami sullo stesso difetto sono correlati). I vantaggi sono moderati (+3 punti di recall).
 - **Equità**: non valutata. Non si hanno attributi sensibili e lo stile di scrittura può correlarsi con lingua madre o
@@ -92,8 +86,16 @@ circa 14 secondi per 1.000 reclami.
 - Mensile: distribuzione dei punteggi, quota dei candidati (oggi 20-24%), lunghezza media e quota di testi troncati,
   quota di stile "the contact" e di prima persona, tasso di esito grave dichiarato.
 - Con etichette ritardate: recall al 5% di revisione su base trimestrale.
-- Riaddestrare se: la quota dei candidati si sposta oltre ±5 punti, il recall al 5% scende di oltre 5 punti rispetto
-  a 86,8%, o la lunghezza media supera le 140 parole.
+- Soglie di allarme (verificate anno per anno in `reports/m5_nlp_drift.md`; 2018-2026, il 2026 è parziale):
+  - **Recall al 5% in calo di oltre 5 punti** rispetto a 86,3% (2024) → riaddestrare. È l'unica soglia legata alle
+    prestazioni. Nel 2026 la recall è 82,0% (-4,3 punti): sotto soglia ma da tenere d'occhio.
+  - **Quota dei candidati oltre ±5 punti da 20%** → solo avviso, non riaddestramento: ha dato un falso allarme (2018: 25,0%,
+    recall 84,2%) e uno nel 2026 (26,5%) che coincide con la recall più bassa del test ma non basta come prova.
+  - **PSI delle parole > 0,10 o lunghezza media > 140 parole** → avviso. Il PSI del punteggio non va usato: nel 2026 vale 0,008
+    mentre le parole medie sono salite da 91 a 122 e i testi lunghi dall'8,8% al 20%.
+  - **Probabilità prevista / tasso osservato fuori da 0,9-1,1** → ricalibrare (oggi 1,06-1,07 dal 2024 perché il tasso grave è sceso
+    da 0,028 a 0,021-0,022). Per il solo ordinamento dei casi non è necessario.
+- Le soglie sono ipotesi: con un solo anno di allarme vero non si può stimare il loro tasso di falsi positivi.
 
 ## Riproducibilità
 
