@@ -13,7 +13,7 @@ I modelli attuariali, il machine learning, la componente NLP, il deployment e il
 | 3 | Modelli tabellari: frequenza (GLM/HGB), severità, premio puro, Tweedie | ✅ completata |
 | 4 | NLP: triage di narrative NHTSA (TF-IDF, cascata con transformer, controlli) | ✅ completata |
 | 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ✅ completata |
-| 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ⬜ |
+| 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ✅ completata |
 | 7 | Business case e ROI | ⬜ |
 
 ## Architettura (milestone 1)
@@ -151,6 +151,13 @@ Dati pubblici, split temporale (train fino al 2023, validation 2024, test 2025-2
 - **Monitoraggio**: il PSI del punteggio è poco sensibile (+6% di premio medio → 0,011); si usano PSI di variabile e variazione della frequenza media prevista.
 - **Drift NLP 2018-2026**: i testi si allungano (91 → 122 parole), la recall al 5% resta 0,82-0,86; soglie di allarme riviste.
 - Documenti: `docs/model_card_insurance_frequency.md`, `docs/model_card_nlp_triage.md`, `docs/risk_register.md`; report in `reports/m5_*`.
+
+## Risultati della milestone 6 (deploy e monitoraggio)
+
+- Servizio FastAPI (`src/serving/`) con premio puro e triage NLP, immagine Docker a tre fasi, test automatici nell'immagine e job di CI dedicato.
+- Scelte di sicurezza dei modelli: Bonus-Malus obbligatorio (mai imputato), categorie sconosciute segnalate, log senza testi, degrado controllato senza stadio 2.
+- Monitoraggio sul traffico: PSI degli input, variazione della frequenza media prevista con soglia che tiene conto del rumore, quota di candidati e lunghezza dei testi.
+- Dettagli, endpoint e limiti: `docs/serving.md`.
 
 ## Limiti noti
 

@@ -75,6 +75,26 @@ services:
     working_dir: /workspace
     command: tail -f /dev/null
 
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+      args:
+        SKLEARN_VERSION: ${SKLEARN_VERSION:-}
+        WITH_TORCH: ${WITH_TORCH:-1}
+    container_name: api
+    user: "${API_UID:-1000}:${API_GID:-1000}"   # non root: la cartella dei log deve essere dell'utente (lo crea `make api-up`)
+    environment:
+      MODELS_DIR: /models
+      PREDICTION_LOG: /logs/predictions.jsonl
+      PRICING_SUFFIX: _payment
+      OMP_NUM_THREADS: "4"
+    volumes:
+      - ./models:/models:ro
+      - ./data/serving_logs:/logs
+    ports:
+      - "8000:8000"
+
 volumes:
   s3_data:
   pg_data:
