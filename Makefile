@@ -1,6 +1,6 @@
 SUBMIT = docker compose exec spark /opt/spark/bin/spark-submit --driver-memory 3g
 
-.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control risk-audit risk-nlp-drift
+.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control risk-audit risk-nlp-drift serving-export api-test api-up api-down api-logs api-demo api-demo-shift api-reset-log
 up:
 	docker compose up -d --build
 down:
@@ -69,3 +69,20 @@ risk-audit:
 	docker compose exec spark python3 src/risk/01_insurance_audit.py
 risk-nlp-drift:
 	docker compose exec spark python3 src/risk/02_nlp_drift.py
+serving-export:
+	docker compose exec spark python3 src/serving/export_assets.py
+api-test:
+	docker build -q -f api/Dockerfile --target test -t irp-api-test . && docker run --rm irp-api-test
+api-up:
+	@mkdir -p data/serving_logs
+	SKLEARN_VERSION=$$(python3 -c "import json;print(json.load(open('models/frequency_metadata_payment.json'))['sklearn_version'])" 2>/dev/null || true) API_UID=$$(id -u) API_GID=$$(id -g) docker compose up -d --build api
+api-down:
+	docker compose stop api
+api-logs:
+	docker compose logs --tail 50 -f api
+api-demo:
+	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --triage 600
+api-demo-shift:
+	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --seed 1
+api-reset-log:
+	: > data/serving_logs/predictions.jsonl

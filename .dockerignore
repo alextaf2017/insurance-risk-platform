@@ -1,0 +1,11 @@
+# il contesto di build e' la radice del repository: senza questo file Docker invierebbe data/ (gigabyte)
+data
+models
+reports
+logs
+.git
+.github
+.ruff_cache
+.pytest_cache
+**/__pycache__
+*.zip
