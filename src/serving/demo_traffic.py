@@ -1,7 +1,8 @@
 """Riproduce traffico realistico sull'API (per la demo di monitoraggio). Gira nel container spark (rete compose: http://api:8000).
 
 Le polizze sono prese dal test e i reclami dal test NHTSA: non sono dati inventati. Con --shift aumenta il Bonus-Malus di
-x1,5 (come lo scenario della milestone 5) per mostrare che il monitoraggio se ne accorge.
+x1,5 per una quota --shift-share delle polizze (default 1 = tutte: spostamento molto severo; il PSI oltre 1 e' saturato
+dal troncamento a 1e-6 e va letto solo come "azione"). Non e' lo scenario della milestone 5, che ripesa il gruppo con Bonus-Malus > 75.
 Uso: python3 src/serving/demo_traffic.py --n 800 [--shift] [--triage 300]
 """
 import argparse
@@ -41,6 +42,7 @@ def main():
     ap.add_argument("--n", type=int, default=800, help="richieste di premio")
     ap.add_argument("--triage", type=int, default=0, help="richieste di triage")
     ap.add_argument("--shift", action="store_true", help="Bonus-Malus x1,5 (scenario di deriva)")
+    ap.add_argument("--shift-share", type=float, default=1.0, help="quota di polizze interessate dallo shift (0-1)")
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
 
@@ -58,8 +60,10 @@ def main():
     pol = pd.read_parquet(MODELING / "policies")
     pol = pol[pol["split"] == "test"].sample(a.n, random_state=a.seed)
     lat, errors = [], 0
-    for r in pol.itertuples():
-        bm = int(round(r.bonus_malus_c * (1.5 if a.shift else 1.0)))
+    rng = np.random.default_rng(a.seed)
+    hit = rng.random(len(pol)) < a.shift_share
+    for r, h in zip(pol.itertuples(), hit):
+        bm = int(round(r.bonus_malus_c * (1.5 if (a.shift and h) else 1.0)))
         body = {"driv_age": int(r.driv_age_c), "veh_age": int(r.veh_age_c), "bonus_malus": max(50, min(bm, 350)),
                 "veh_power": int(r.veh_power), "density": float(math.exp(r.log_density)), "veh_gas": str(r.veh_gas),
                 "veh_brand": str(r.veh_brand), "region": str(r.region), "exposure": float(min(max(r.exposure, 1e-3), 1.0))}

@@ -1,0 +1,46 @@
+{
+  "_nota": "TUTTI i valori di questo file sono ASSUNZIONI di scenario, non dati misurati. Servono per mostrare come cambia il risultato: vanno sostituiti con i numeri dell'azienda. Cio' che e' misurato (guadagni di selezione, recall, volumi, latenze) viene dagli script 01 e 02.",
+  "financial": {
+    "expense_ratio": 0.25,
+    "loss_ratio_target": 0.70,
+    "discount_rate": 0.08,
+    "horizon_years": 3,
+    "book_policy_years": 300000,
+    "_note": "Portafoglio illustrativo di 300.000 anni-polizza: freMTPL2 e' un campione, non un assicuratore. Spese 25% e loss ratio obiettivo 70% sono valori tipici ma ipotetici (margine tecnico 5%)."
+  },
+  "pricing": {
+    "unpaid_cost_share": [0.0, 0.5, 1.0],
+    "_unpaid_note": "Costo di un sinistro contato ma senza importo registrato, in quota del costo di un sinistro pagato (0 = nessun costo). Da confermare con chi possiede i dati.",
+    "markets": {
+      "bassa": {"shop": 0.10, "beta": 5},
+      "media": {"shop": 0.30, "beta": 10},
+      "alta": {"shop": 0.50, "beta": 20}
+    },
+    "_market_note": "shop = quota di clienti che confronta i prezzi; beta = sensibilita' alla differenza di prezzo (con beta 10, un prezzo +10% sposta la probabilita' di scelta dal 50% al 28%).",
+    "tail_load": {"basso": 1.18, "base": 1.385, "alto": 1.49}
+  },
+  "costs": {
+    "fte_year_cost": 90000,
+    "build_fte": 2.0,
+    "build_months": 6,
+    "validation_fte_once": 0.3,
+    "run_fte_per_year": 0.5,
+    "infra_per_year": 6000,
+    "_note": "Costo pieno annuo per FTE, team di sviluppo, validazione attuariale una tantum, manutenzione e monitoraggio continui. L'infrastruttura di inferenza e' trascurabile (misurata: pochi millisecondi per previsione)."
+  },
+  "scenarios": {
+    "pessimistico": {"unpaid": 1.0, "market": "bassa", "tail": "basso", "shrink": 0.4, "p_competitors_upgrade": 0.25, "decay": [1.0, 0.5, 0.25], "cost_mult": 1.5},
+    "base": {"unpaid": 0.5, "market": "media", "tail": "base", "shrink": 0.7, "p_competitors_upgrade": 0.5, "decay": [1.0, 0.75, 0.5], "cost_mult": 1.0},
+    "ottimistico": {"unpaid": 0.0, "market": "alta", "tail": "alto", "shrink": 1.0, "p_competitors_upgrade": 0.75, "decay": [1.0, 1.0, 1.0], "cost_mult": 0.8},
+    "_note": "shrink = quota del guadagno misurato nel test che si conserva in produzione; p_competitors_upgrade = probabilita' che i concorrenti adottino un modello migliore (allora il valore e' evitare la perdita da selezione avversa, altrimenti e' il guadagno di volume); decay = quota del beneficio mantenuta negli anni 1, 2, 3; cost_mult scala i costi."
+  },
+  "triage": {
+    "minutes_per_review": 6,
+    "reviewer_cost_per_hour": 45,
+    "hours_per_fte_year": 1600,
+    "build_cost": 40000,
+    "maintenance_per_year": 25000,
+    "review_rate": 0.065,
+    "_note": "Minuti per rilettura di un reclamo, costo orario pieno di un revisore, costo di sviluppo una tantum e di manutenzione annua del triage. review_rate = quota di reclami che il processo rilegge (e' quella che la soglia di servizio produce sul test)."
+  }
+}

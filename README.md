@@ -14,7 +14,7 @@ I modelli attuariali, il machine learning, la componente NLP, il deployment e il
 | 4 | NLP: triage di narrative NHTSA (TF-IDF, cascata con transformer, controlli) | ✅ completata |
 | 5 | Risk & responsible AI (bias, drift, overfitting, model card) | ✅ completata |
 | 6 | Deploy (FastAPI, Docker, CI/CD, monitoraggio) | ✅ completata |
-| 7 | Business case e ROI | ⬜ |
+| 7 | Business case e ROI | ✅ completata |
 
 ## Architettura (milestone 1)
 
@@ -158,6 +158,12 @@ Dati pubblici, split temporale (train fino al 2023, validation 2024, test 2025-2
 - Scelte di sicurezza dei modelli: Bonus-Malus obbligatorio (mai imputato), categorie sconosciute segnalate, log senza testi, degrado controllato senza stadio 2.
 - Monitoraggio sul traffico: PSI degli input, variazione della frequenza media prevista con soglia che tiene conto del rumore, quota di candidati e lunghezza dei testi.
 - Dettagli, endpoint e limiti: `docs/serving.md`.
+
+## Risultati della milestone 7 (business case e ROI)
+
+- **Prezzo**: in un mercato simulato con selezione avversa, non segmentare costa il 4,1% del premio, restare col GLM invece del boosting l'1,8% (IC 1,4-2,2%). Il valore del boosting è difensivo e il VAN (base +1,41 milioni a 3 anni, portafoglio illustrativo) cambia segno se i concorrenti non migliorano.
+- **Triage**: rilegge il 6,5% dei reclami e trova l'89,5% dei casi gravi; 468 ore l'anno invece di 7.205. Il transformer aggiunge 33 casi l'anno rispetto al solo TF-IDF.
+- Le assunzioni (`src/business/assumptions.json`) sono dichiarate e separate dai risultati misurati; punti di pareggio e sensibilità in `docs/business_case.md`.
 
 ## Limiti noti
 
