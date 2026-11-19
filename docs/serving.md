@@ -9,7 +9,7 @@ make serving-export    # una volta: crea models/serving_reference.json (riferime
 make api-test          # test nell'immagine Docker
 make api-up            # build e avvio su http://localhost:8000  (WITH_TORCH=0 make api-up: senza stadio 2)
 make api-demo          # traffico reale del test + rapporto di monitoraggio
-make api-demo-shift    # stesso, con Bonus-Malus x1,5: il monitoraggio deve scattare
+make api-demo-shift    # stesso, con Bonus-Malus x1,5 per il 20% delle polizze: il monitoraggio deve scattare
 make api-reset-log     # svuota il log delle previsioni
 ```
 

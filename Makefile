@@ -83,6 +83,6 @@ api-logs:
 api-demo:
 	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --triage 600
 api-demo-shift:
-	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --seed 1
+	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --shift-share 0.2 --seed 1
 api-reset-log:
 	: > data/serving_logs/predictions.jsonl
