@@ -1,0 +1,170 @@
+{
+ "scenarios": [
+  {
+   "scenario": "pessimistico",
+   "costo_dev_anno0": 175500.0,
+   "costo_annuo": 76500.0,
+   "beneficio_anno1": -4997.0300375382485,
+   "VAN": -380408.5739958338,
+   "rientro_anno": null,
+   "pareggio_anni_polizza": null
+  },
+  {
+   "scenario": "base",
+   "costo_dev_anno0": 117000.0,
+   "costo_annuo": 51000.0,
+   "beneficio_anno1": 842921.5906106088,
+   "VAN": 1408622.2271345446,
+   "rientro_anno": 1,
+   "pareggio_anni_polizza": 44977.15590564172
+  },
+  {
+   "scenario": "ottimistico",
+   "costo_dev_anno0": 93600.0,
+   "costo_annuo": 40800.0,
+   "beneficio_anno1": 4362366.636458437,
+   "VAN": 11043496.359007986,
+   "rientro_anno": 1,
+   "pareggio_anni_polizza": 5303.538882097199
+  }
+ ],
+ "base": {
+  "npv": 1408622.2271345446,
+  "payback": 1,
+  "benefit_year1": 842921.5906106088,
+  "cost_year0": 117000.0,
+  "cost_run": 51000.0,
+  "break_even_book": 44977.15590564172,
+  "per_py_market": 1.4490658253577597,
+  "defensive_pct": 1.7604376076957085,
+  "offensive_pct": -0.41131647545640776
+ },
+ "base_ci_npv": [
+  605657.7786129868,
+  2362390.887025496
+ ],
+ "sensitivity": [
+  {
+   "parametro": "sinistri senza importo (costo)",
+   "valore": "0.0",
+   "VAN": 1679003.0669385195
+  },
+  {
+   "parametro": "sinistri senza importo (costo)",
+   "valore": "0.5",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "sinistri senza importo (costo)",
+   "valore": "1.0",
+   "VAN": 1138241.387330577
+  },
+  {
+   "parametro": "mercato (sensibilita' al prezzo)",
+   "valore": "bassa",
+   "VAN": 200236.60101551548
+  },
+  {
+   "parametro": "mercato (sensibilita' al prezzo)",
+   "valore": "media",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "mercato (sensibilita' al prezzo)",
+   "valore": "alta",
+   "VAN": 2712838.4733704333
+  },
+  {
+   "parametro": "fattore di coda",
+   "valore": "basso",
+   "VAN": 1163354.2808787625
+  },
+  {
+   "parametro": "fattore di coda",
+   "valore": "base",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "fattore di coda",
+   "valore": "alto",
+   "VAN": 1534247.2727777502
+  },
+  {
+   "parametro": "guadagno conservato in produzione",
+   "valore": "0.4",
+   "VAN": 698456.1527841791
+  },
+  {
+   "parametro": "guadagno conservato in produzione",
+   "valore": "0.7",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "guadagno conservato in produzione",
+   "valore": "1.0",
+   "VAN": 2118788.3014849103
+  },
+  {
+   "parametro": "concorrenti migliorano (probabilita')",
+   "valore": "0.0",
+   "VAN": -1258828.5163693486
+  },
+  {
+   "parametro": "concorrenti migliorano (probabilita')",
+   "valore": "0.5",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "concorrenti migliorano (probabilita')",
+   "valore": "1.0",
+   "VAN": 4076072.970638438
+  },
+  {
+   "parametro": "durata del vantaggio",
+   "valore": "[1, 0.5, 0.25]",
+   "VAN": 1060670.2927896178
+  },
+  {
+   "parametro": "durata del vantaggio",
+   "valore": "[1, 0.75, 0.5]",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "durata del vantaggio",
+   "valore": "[1, 1, 1]",
+   "VAN": 1923858.745299148
+  },
+  {
+   "parametro": "moltiplicatore dei costi",
+   "valore": "0.8",
+   "VAN": 1458308.6164044729
+  },
+  {
+   "parametro": "moltiplicatore dei costi",
+   "valore": "1.0",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "moltiplicatore dei costi",
+   "valore": "1.5",
+   "VAN": 1284406.2539597235
+  },
+  {
+   "parametro": "dimensione del portafoglio (anni-polizza)",
+   "valore": "100000",
+   "VAN": 303919.44481175364
+  },
+  {
+   "parametro": "dimensione del portafoglio (anni-polizza)",
+   "valore": "300000",
+   "VAN": 1408622.2271345446
+  },
+  {
+   "parametro": "dimensione del portafoglio (anni-polizza)",
+   "valore": "1000000",
+   "VAN": 5275081.965264313
+  }
+ ],
+ "triage_npv": 676831.3365499416,
+ "triage_net_year": 278154.5825
+}

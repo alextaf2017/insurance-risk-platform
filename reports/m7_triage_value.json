@@ -1,0 +1,105 @@
+{
+ "year": 2025,
+ "N_year": 72051,
+ "P_year": 1614,
+ "review_rate": 0.065,
+ "recall_combo": 0.8949900934050382,
+ "recall_tfidf": 0.87432776677045,
+ "recall_combo_ci": [
+  0.8697990376450608,
+  0.9184828757429946
+ ],
+ "extra_cases": 33.348995188225395,
+ "extra_cases_ci": [
+  20.54617888480042,
+  44.78130484007924
+ ],
+ "missed_vs_all": 169.48598924426832,
+ "review_hours": 468.33150000000006,
+ "review_hours_all": 7205.1,
+ "cost_year": 21074.917500000003,
+ "cost_all": 324229.5,
+ "saving_vs_all": 303154.5825,
+ "table": [
+  {
+   "ranker": "TF-IDF (stadio 1)",
+   "tasso_revisione": 0.02,
+   "recall": 0.5929804698556468
+  },
+  {
+   "ranker": "TF-IDF (stadio 1)",
+   "tasso_revisione": 0.05,
+   "recall": 0.8352674780639683
+  },
+  {
+   "ranker": "TF-IDF (stadio 1)",
+   "tasso_revisione": 0.065,
+   "recall": 0.87432776677045
+  },
+  {
+   "ranker": "TF-IDF (stadio 1)",
+   "tasso_revisione": 0.1,
+   "recall": 0.9136711010472686
+  },
+  {
+   "ranker": "Transformer (stadio 2)",
+   "tasso_revisione": 0.02,
+   "recall": 0.6139258420605718
+  },
+  {
+   "ranker": "Transformer (stadio 2)",
+   "tasso_revisione": 0.05,
+   "recall": 0.8480045287291254
+  },
+  {
+   "ranker": "Transformer (stadio 2)",
+   "tasso_revisione": 0.065,
+   "recall": 0.8797056326068498
+  },
+  {
+   "ranker": "Transformer (stadio 2)",
+   "tasso_revisione": 0.1,
+   "recall": 0.9213133314463628
+  },
+  {
+   "ranker": "Combinazione (servizio)",
+   "tasso_revisione": 0.02,
+   "recall": 0.6210019813189923
+  },
+  {
+   "ranker": "Combinazione (servizio)",
+   "tasso_revisione": 0.05,
+   "recall": 0.86810076422304
+  },
+  {
+   "ranker": "Combinazione (servizio)",
+   "tasso_revisione": 0.065,
+   "recall": 0.8949900934050382
+  },
+  {
+   "ranker": "Combinazione (servizio)",
+   "tasso_revisione": 0.1,
+   "recall": 0.9281064251344466
+  },
+  {
+   "ranker": "Casuale (nessun modello)",
+   "tasso_revisione": 0.02,
+   "recall": 0.02
+  },
+  {
+   "ranker": "Casuale (nessun modello)",
+   "tasso_revisione": 0.05,
+   "recall": 0.05
+  },
+  {
+   "ranker": "Casuale (nessun modello)",
+   "tasso_revisione": 0.065,
+   "recall": 0.065
+  },
+  {
+   "ranker": "Casuale (nessun modello)",
+   "tasso_revisione": 0.1,
+   "recall": 0.1
+  }
+ ]
+}

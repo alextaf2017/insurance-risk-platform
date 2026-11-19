@@ -1,6 +1,6 @@
 SUBMIT = docker compose exec spark /opt/spark/bin/spark-submit --driver-memory 3g
 
-.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control risk-audit risk-nlp-drift serving-export api-test api-up api-down api-logs api-demo api-demo-shift api-reset-log
+.PHONY: up down smoke download bronze silver gold demo explore eda stats-export stats model-export model-freq model-sev models model-freq-pay model-sev-pay pipeline shell clean nlp-up nlp-download nlp-lake nlp-smoke nlp-baseline nlp-experiments nlp-stage1 nlp-finetune-dry nlp-finetune nlp-finetune-log nlp-compare nlp-control risk-audit risk-nlp-drift serving-export api-test api-up api-down api-logs api-demo api-demo-shift api-reset-log biz-pricing biz-triage biz-case
 up:
 	docker compose up -d --build
 down:
@@ -83,6 +83,12 @@ api-logs:
 api-demo:
 	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --triage 600
 api-demo-shift:
-	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --seed 1
+	docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --shift-share 0.2 --seed 1
 api-reset-log:
 	: > data/serving_logs/predictions.jsonl
+biz-pricing:
+	docker compose exec spark python3 src/business/01_pricing_value.py
+biz-triage:
+	docker compose exec spark python3 src/business/02_triage_value.py
+biz-case:
+	docker compose exec spark python3 src/business/03_business_case.py

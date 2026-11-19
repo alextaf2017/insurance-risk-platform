@@ -60,10 +60,11 @@ targets = {
     "api-reset-log": ": > data/serving_logs/predictions.jsonl",
     "api-logs": "docker compose logs --tail 50 -f api",
     "api-demo": "docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --triage 600",
-    "api-demo-shift": "docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --seed 1",
+    "api-demo-shift": "docker compose exec spark python3 src/serving/demo_traffic.py --n 800 --shift --shift-share 0.2 --seed 1",
 }
 m = Path("Makefile"); t = m.read_text(encoding="utf-8")
-t = t.replace("demo_traffic.py --n 800 --triage 200", "demo_traffic.py --n 800 --triage 600")  # >= 500: soglia minima del monitoraggio
+t = t.replace("demo_traffic.py --n 800 --triage 200", "demo_traffic.py --n 800 --triage 600")
+t = t.replace("demo_traffic.py --n 800 --shift --seed 1", "demo_traffic.py --n 800 --shift --shift-share 0.2 --seed 1")  # >= 500: soglia minima del monitoraggio
 added = []
 for name, cmd in targets.items():
     if not re.search(rf"^{re.escape(name)}:", t, flags=re.M):
